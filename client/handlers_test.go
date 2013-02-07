@@ -2,7 +2,7 @@ package client
 
 import (
 	"code.google.com/p/gomock/gomock"
-	"github.com/fluffle/goirc/state"
+	"github.com/natimen/goirc/state"
 	"testing"
 )
 
@@ -261,7 +261,6 @@ func TestMODE(t *testing.T) {
 	if !chan1.Modes.Secret || chan1.Modes.Key != "somekey" {
 		t.Errorf("Channel.ParseModes() not called correctly.")
 	}
-
 
 	// Send a nick mode line, returning Me
 	gomock.InOrder(

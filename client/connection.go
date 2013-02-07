@@ -2,12 +2,13 @@ package client
 
 import (
 	"bufio"
+	"code.google.com/p/go.net/websocket"
 	"crypto/tls"
 	"errors"
 	"fmt"
 	"github.com/fluffle/goevent/event"
-	"github.com/fluffle/goirc/state"
 	"github.com/fluffle/golog/logging"
+	"github.com/natimen/goirc/state"
 	"net"
 	"strings"
 	"time"
@@ -60,8 +61,11 @@ type Conn struct {
 	Flood bool
 
 	// Internal counters for flood protection
-	badness time.Duration
+	badness  time.Duration
 	lastsent time.Time
+
+	//The websocket needed for websocketing.
+	Websock *websocket.Conn
 }
 
 // Creates a new IRC connection object, but doesn't connect to anything so
@@ -103,6 +107,7 @@ func Client(nick, ident, name string,
 		NewNick:   func(s string) string { return s + "_" },
 		badness:   0,
 		lastsent:  time.Now(),
+		Websock:   nil,
 	}
 	conn.addIntHandlers()
 	conn.Me = state.NewNick(nick, l)
